@@ -44,8 +44,20 @@ class AddItemDialogWidgetState extends State<AddItemDialogWidget> {
   @override
   Widget build(BuildContext context) {
     return new AlertDialog(
-        content: TextField(
-          onChanged: _handleTextChanged,
+        contentPadding: EdgeInsets.all(16.0),
+        content: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: 'Item Name',
+                  hintText: 'eg. Milk',
+                ),
+                onChanged: _handleTextChanged,
+              ),
+            )
+          ],
         ),
         actions: <Widget>[
           FlatButton(
