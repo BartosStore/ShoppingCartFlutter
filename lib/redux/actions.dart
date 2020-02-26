@@ -6,6 +6,10 @@ class AddCartItemAction {
   AddCartItemAction({this.item});
 }
 
+class RemoveCartItemsAction {
+  RemoveCartItemsAction();
+}
+
 class ToggleItemStateAction {
   final CartItem item;
 
