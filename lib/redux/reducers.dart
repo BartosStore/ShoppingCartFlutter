@@ -6,12 +6,18 @@ List<CartItem> appReducers(List<CartItem> items, dynamic action) {
     return addItem(items, action);
   } else if (action is ToggleItemStateAction) {
     return toggleItemState(items, action);
+  } else if (action is RemoveCartItemsAction) {
+    return removeItems(items, action);
   }
   return items;
 }
 
 List<CartItem> addItem(List<CartItem> items, AddCartItemAction action) {
   return List.from(items)..add(action.item);
+}
+
+List<CartItem> removeItems(List<CartItem> items, RemoveCartItemsAction action) {
+  return List.from(items)..removeWhere((item) => item.checked == true);
 }
 
 List<CartItem> toggleItemState(
