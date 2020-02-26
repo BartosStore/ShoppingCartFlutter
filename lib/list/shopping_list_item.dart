@@ -8,6 +8,12 @@ class ShoppingListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(item.name);
+    return Card(
+      child: CheckboxListTile(
+        title: Text(item.name),
+        value: item.checked,
+        onChanged: null, // todo: implement
+      ),
+    );
   }
 }
