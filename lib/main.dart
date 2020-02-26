@@ -1,63 +1,31 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+import 'package:shop_list_redux/redux/reducers.dart';
+import 'package:shop_list_redux/model/cart_item.dart';
+import 'package:shop_list_redux/shopping_cart_app.dart';
+
+void main() {
+  final store = new Store<List<CartItem>>(
+    appReducers,
+    initialState: new List(),
+  );
+
+  runApp(new ReduxApp(store: store));
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class ReduxApp extends StatelessWidget {
+  ReduxApp({this.store});
 
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final Store<List<CartItem>> store;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+    return new StoreProvider<List<CartItem>>(
+      store: store,
+      child: new ShoppingCartApp(store: store),
     );
   }
 }
