@@ -63,9 +63,14 @@ class AddItemDialogWidgetState extends State<AddItemDialogWidget> {
           FlatButton(
             child: Text('Add'),
             onPressed: () {
+              Navigator.pop(context);
               callback(itemName);
             },
-          )
+          ),
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
         ]);
   }
 }
