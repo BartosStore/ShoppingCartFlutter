@@ -1,13 +1,13 @@
 import 'package:shop_list_redux/model/cart_item.dart';
 
-class AddCartItem {
-  final CartItem cartItem;
+class AddCartItemAction {
+  final CartItem item;
 
-  AddCartItem({this.cartItem});
+  AddCartItemAction({this.item});
 }
 
-class ToggleItemState {
-  final CartItem cartItem;
+class ToggleItemStateAction {
+  final CartItem item;
 
-  ToggleItemState({this.cartItem});
+  ToggleItemStateAction({this.item});
 }
