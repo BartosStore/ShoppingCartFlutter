@@ -17,6 +17,6 @@ List<CartItem> addItem(List<CartItem> items, AddCartItemAction action) {
 List<CartItem> toggleItemState(
     List<CartItem> items, ToggleItemStateAction action) {
   return items
-    ..map((item) => item.name == action.item.name ? action.item : item)
-    ..toList(); // toList creates new List
+      .map((item) => item.name == action.item.name ? action.item : item)
+      .toList(); // toList creates new List
 }
