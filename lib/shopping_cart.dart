@@ -4,28 +4,47 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shop_list_redux/add_item/add_item_dialog.dart';
 
 import 'package:shop_list_redux/list/shopping_list.dart';
+import 'package:shop_list_redux/redux/actions.dart';
 import 'package:shop_list_redux/redux/app_state.dart';
-import 'package:shop_list_redux/remove_items/remove_items_dialog.dart';
 import 'package:shop_list_redux/shopping_cart_view_model.dart';
 
 class ShoppingCart extends StatelessWidget {
   ShoppingCart({Key key}) : super(key: key);
 
-  _openAddItemDialog(BuildContext context) {
+  void _openAddItemDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AddItemDialog(),
     );
   }
 
-  _openRemoveItemsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => RemoveItemsDialog(),
+  Widget _renderAddItemFAB(context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.0),
+      child: FloatingActionButton(
+        onPressed: () => _openAddItemDialog(context),
+        child: Icon(
+          Icons.add,
+        ),
+      ),
     );
   }
 
-  _renderDescription() {
+  Widget _renderRemoveItemsFAB() {
+    return StoreConnector<AppState, ShoppingCartViewModel>(
+      converter: (store) => ShoppingCartViewModel(
+        onItemsDelete: () => store.dispatch(RemoveCartItemsAction()),
+      ),
+      builder: (context, viewModel) => FloatingActionButton(
+        onPressed: () => viewModel.onItemsDelete(),
+        child: Icon(
+          Icons.remove,
+        ),
+      ),
+    );
+  }
+
+  Widget _renderDescription() {
     return StoreConnector<AppState, ShoppingCartViewModel>(
       converter: (store) => ShoppingCartViewModel(
         itemsCount: store.state.cartItems.length,
@@ -61,21 +80,8 @@ class ShoppingCart extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: FloatingActionButton(
-                onPressed: () => _openAddItemDialog(context),
-                child: Icon(
-                  Icons.add,
-                ),
-              ),
-            ),
-            FloatingActionButton(
-              onPressed: () => _openRemoveItemsDialog(context),
-              child: Icon(
-                Icons.remove,
-              ),
-            )
+            _renderAddItemFAB(context),
+            _renderRemoveItemsFAB()
           ],
         ),
       ),
