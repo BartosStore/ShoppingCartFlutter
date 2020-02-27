@@ -38,7 +38,7 @@ class ShoppingCart extends StatelessWidget {
       builder: (context, viewModel) => FloatingActionButton(
         onPressed: () => viewModel.onItemsDelete(),
         child: Icon(
-          Icons.remove,
+          Icons.done,
         ),
       ),
     );
