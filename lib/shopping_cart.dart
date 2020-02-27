@@ -4,9 +4,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shop_list_redux/add_item/add_item_dialog.dart';
 
 import 'package:shop_list_redux/list/shopping_list.dart';
-import 'package:shop_list_redux/model/cart_item.dart';
 import 'package:shop_list_redux/redux/app_state.dart';
 import 'package:shop_list_redux/remove_items/remove_items_dialog.dart';
+import 'package:shop_list_redux/shopping_cart_view_model.dart';
 
 class ShoppingCart extends StatelessWidget {
   ShoppingCart({Key key}) : super(key: key);
@@ -26,12 +26,17 @@ class ShoppingCart extends StatelessWidget {
   }
 
   _renderDescription() {
-    return StoreConnector<AppState, List<CartItem>>(
-      converter: (store) => store.state.cartItems,
-      builder: (context, items) => Container(
+    return StoreConnector<AppState, ShoppingCartViewModel>(
+      converter: (store) => ShoppingCartViewModel(
+        itemsCount: store.state.cartItems.length,
+        checkedItemsCount:
+            store.state.cartItems.where((item) => item.checked == true).length,
+      ),
+      builder: (context, viewModel) => Container(
         alignment: Alignment.topLeft,
         padding: EdgeInsets.all(8.0),
-        child: Text('${items.length} items in your cart'),
+        child: Text(
+            '${viewModel.itemsCount} items in your cart and ${viewModel.checkedItemsCount} checked'),
       ),
     );
   }
