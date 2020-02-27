@@ -1,39 +1,45 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_redux/flutter_redux.dart';
+
+import 'package:shop_list_redux/add_item/app_item_dialog_view_model.dart';
 import 'package:shop_list_redux/model/cart_item.dart';
 import 'package:shop_list_redux/redux/actions.dart';
-
-typedef OnItemAddedCallback = Function(String itemName);
+import 'package:shop_list_redux/redux/app_state.dart';
 
 class AddItemDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<List<CartItem>, OnItemAddedCallback>(
+    return new StoreConnector<AppState, AddItemDialogViewModel>(
       converter: (store) {
-        return (itemName) => store.dispatch(
-            AddCartItemAction(item: CartItem(name: itemName, checked: false)));
+        return AddItemDialogViewModel(
+          addItem: (itemName) => store.dispatch(
+            AddCartItemAction(item: CartItem(name: itemName, checked: false)),
+          ),
+        );
       },
-      builder: (context, callback) => AddItemDialogWidget(callback: callback),
+      builder: (context, viewModel) =>
+          AddItemDialogWidget(viewModel: viewModel),
     );
   }
 }
 
 class AddItemDialogWidget extends StatefulWidget {
-  AddItemDialogWidget({this.callback});
+  AddItemDialogWidget({this.viewModel});
 
-  final OnItemAddedCallback callback;
+  final AddItemDialogViewModel viewModel;
 
   @override
   State<AddItemDialogWidget> createState() {
-    return AddItemDialogWidgetState(callback);
+    return AddItemDialogWidgetState(viewModel);
   }
 }
 
 class AddItemDialogWidgetState extends State<AddItemDialogWidget> {
-  String itemName;
+  AddItemDialogWidgetState(this.viewModel);
 
-  final OnItemAddedCallback callback;
-  AddItemDialogWidgetState(this.callback);
+  String itemName;
+  final AddItemDialogViewModel viewModel;
 
   _handleTextChanged(String newItemName) {
     setState(() {
@@ -64,7 +70,7 @@ class AddItemDialogWidgetState extends State<AddItemDialogWidget> {
             child: Text('Add'),
             onPressed: () {
               Navigator.pop(context);
-              callback(itemName);
+              viewModel.addItem(itemName);
             },
           ),
           FlatButton(

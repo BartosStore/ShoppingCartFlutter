@@ -2,37 +2,40 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:shop_list_redux/model/cart_item.dart';
 import 'package:shop_list_redux/redux/actions.dart';
+import 'package:shop_list_redux/redux/app_state.dart';
+import 'package:shop_list_redux/remove_items/remove_items_dialog_view_model.dart';
 
 typedef OnItemRemovedCallback = Function();
 
 class RemoveItemsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<List<CartItem>, OnItemRemovedCallback>(
+    return new StoreConnector<AppState, RemoveItemsDialogViewModel>(
       converter: (store) {
-        return () => store.dispatch(RemoveCartItemsAction());
+        return RemoveItemsDialogViewModel(
+          () => store.dispatch(RemoveCartItemsAction()),
+        );
       },
-      builder: (context, removeCallback) =>
-          RemoveItemsDialogWidget(callback: removeCallback),
+      builder: (context, viewModel) =>
+          RemoveItemsDialogWidget(viewModel: viewModel),
     );
   }
 }
 
 class RemoveItemsDialogWidget extends StatefulWidget {
-  RemoveItemsDialogWidget({this.callback});
+  RemoveItemsDialogWidget({this.viewModel});
 
-  final OnItemRemovedCallback callback;
+  final RemoveItemsDialogViewModel viewModel;
 
   _RemoveItemsDialogWidgetState createState() =>
-      _RemoveItemsDialogWidgetState(removeCallback: callback);
+      _RemoveItemsDialogWidgetState(viewModel: viewModel);
 }
 
 class _RemoveItemsDialogWidgetState extends State<RemoveItemsDialogWidget> {
-  _RemoveItemsDialogWidgetState({this.removeCallback});
+  _RemoveItemsDialogWidgetState({this.viewModel});
 
-  final OnItemRemovedCallback removeCallback;
+  final RemoveItemsDialogViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class _RemoveItemsDialogWidgetState extends State<RemoveItemsDialogWidget> {
             child: Text('Remove'),
             onPressed: () {
               Navigator.pop(context);
-              removeCallback();
+              viewModel.deleteCheckedItems();
             },
           ),
           FlatButton(

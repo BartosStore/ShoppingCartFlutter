@@ -1,28 +1,29 @@
-import 'package:shop_list_redux/model/cart_item.dart';
 import 'package:shop_list_redux/redux/actions.dart';
+import 'package:shop_list_redux/redux/app_state.dart';
 
-List<CartItem> appReducers(List<CartItem> items, dynamic action) {
+AppState appReducers(AppState state, dynamic action) {
   if (action is AddCartItemAction) {
-    return addItem(items, action);
-  } else if (action is ToggleItemStateAction) {
-    return toggleItemState(items, action);
+    return addItem(state, action);
   } else if (action is RemoveCartItemsAction) {
-    return removeItems(items, action);
+    return removeItems(state, action);
+  } else if (action is ToggleItemStateAction) {
+    return toggleItemState(state, action);
   }
-  return items;
+  return state;
 }
 
-List<CartItem> addItem(List<CartItem> items, AddCartItemAction action) {
-  return List.from(items)..add(action.item);
+AppState addItem(AppState state, AddCartItemAction action) {
+  return state.copyWith(List.from(state.cartItems)..add(action.item));
 }
 
-List<CartItem> removeItems(List<CartItem> items, RemoveCartItemsAction action) {
-  return List.from(items)..removeWhere((item) => item.checked == true);
+AppState removeItems(AppState state, RemoveCartItemsAction action) {
+  return AppState(
+      cartItems: List.from(state.cartItems)
+        ..removeWhere((item) => item.checked == true));
 }
 
-List<CartItem> toggleItemState(
-    List<CartItem> items, ToggleItemStateAction action) {
-  return items
+AppState toggleItemState(AppState state, ToggleItemStateAction action) {
+  return state.copyWith(state.cartItems
       .map((item) => item.name == action.item.name ? action.item : item)
-      .toList(); // toList creates new List
+      .toList());
 }

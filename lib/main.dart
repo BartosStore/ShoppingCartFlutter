@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:shop_list_redux/redux/app_state.dart';
 
 import 'package:shop_list_redux/redux/reducers.dart';
-import 'package:shop_list_redux/model/cart_item.dart';
-import 'package:shop_list_redux/shopping_cart_app.dart';
+import 'package:shop_list_redux/shopping_cart.dart';
 
 void main() {
-  final store = new Store<List<CartItem>>(
+  final store = new Store<AppState>(
     appReducers,
-    initialState: new List(),
+    initialState: AppState.init(),
   );
 
   runApp(new ReduxApp(store: store));
@@ -19,13 +19,17 @@ void main() {
 class ReduxApp extends StatelessWidget {
   ReduxApp({this.store});
 
-  final Store<List<CartItem>> store;
+  final Store<AppState> store;
 
   @override
   Widget build(BuildContext context) {
-    return new StoreProvider<List<CartItem>>(
+    return new StoreProvider<AppState>(
       store: store,
-      child: new ShoppingCartApp(store: store),
+      child: MaterialApp(
+        title: 'ShoppingCart',
+        theme: new ThemeData(primarySwatch: Colors.blue),
+        home: ShoppingCart(),
+      ),
     );
   }
 }
