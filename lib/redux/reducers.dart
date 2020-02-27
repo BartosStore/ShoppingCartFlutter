@@ -4,6 +4,8 @@ import 'package:shop_list_redux/redux/app_state.dart';
 AppState appReducers(AppState state, dynamic action) {
   if (action is AddCartItemAction) {
     return addItem(state, action);
+  } else if (action is RemoveCartItemAction) {
+    return removeItem(state, action);
   } else if (action is RemoveCartItemsAction) {
     return removeItems(state, action);
   } else if (action is ToggleItemStateAction) {
@@ -14,6 +16,10 @@ AppState appReducers(AppState state, dynamic action) {
 
 AppState addItem(AppState state, AddCartItemAction action) {
   return state.copyWith(List.from(state.cartItems)..add(action.item));
+}
+
+AppState removeItem(AppState state, RemoveCartItemAction action) {
+  return AppState(cartItems: List.from(state.cartItems)..remove(action.item));
 }
 
 AppState removeItems(AppState state, RemoveCartItemsAction action) {

@@ -1,9 +1,15 @@
 import 'package:shop_list_redux/model/cart_item.dart';
 
 class AddCartItemAction {
-  final CartItem item;
-
   AddCartItemAction({this.item});
+
+  final CartItem item;
+}
+
+class RemoveCartItemAction {
+  RemoveCartItemAction(this.item);
+
+  final CartItem item;
 }
 
 class RemoveCartItemsAction {
@@ -11,7 +17,7 @@ class RemoveCartItemsAction {
 }
 
 class ToggleItemStateAction {
-  final CartItem item;
-
   ToggleItemStateAction({this.item});
+
+  final CartItem item;
 }

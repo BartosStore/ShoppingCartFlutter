@@ -16,17 +16,22 @@ class ShoppingListItem extends StatelessWidget {
     return StoreConnector<AppState, ShoppingListItemViewModel>(
       converter: (store) {
         return ShoppingListItemViewModel(
-            onToggle: (item) =>
-                store.dispatch(ToggleItemStateAction(item: item)));
+          onToggle: (item) => store.dispatch(ToggleItemStateAction(item: item)),
+          removeItem: (item) => store.dispatch(RemoveCartItemAction(item)),
+        );
       },
-      builder: (context, viewModel) => Card(
-        child: CheckboxListTile(
-          title: Text(item.name),
-          value: item.checked,
-          onChanged: (bool newValue) => viewModel.onToggle(
-            CartItem(
-              name: item.name,
-              checked: newValue,
+      builder: (context, viewModel) => Dismissible(
+        key: Key(item.name),
+        onDismissed: (_) => viewModel.removeItem(item),
+        child: Card(
+          child: CheckboxListTile(
+            title: Text(item.name),
+            value: item.checked,
+            onChanged: (bool newValue) => viewModel.onToggle(
+              CartItem(
+                name: item.name,
+                checked: newValue,
+              ),
             ),
           ),
         ),

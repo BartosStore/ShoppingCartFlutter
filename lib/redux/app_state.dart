@@ -5,8 +5,10 @@ class AppState {
 
   AppState({this.cartItems});
 
-  factory AppState.init() =>
-      AppState(cartItems: List()..add(CartItem(name: "Eggs", checked: false)));
+  factory AppState.init() => AppState(
+      cartItems: List()
+        ..add(CartItem(name: "Eggs", checked: false))
+        ..add(CartItem(name: "Bread", checked: false)));
 
   AppState copyWith(List<CartItem> cartItems) {
     return AppState(cartItems: cartItems);
