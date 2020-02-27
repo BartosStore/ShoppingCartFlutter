@@ -10,6 +10,12 @@ class AddCartItemAction {
   final CartItem item;
 }
 
+class AddCartItemsAction {
+  AddCartItemsAction({this.items});
+
+  final List<CartItem> items;
+}
+
 class RemoveCartItemAction {
   RemoveCartItemAction(this.item);
 
@@ -32,9 +38,9 @@ class ToggleItemStateAction {
 ThunkAction<AppState> fetchItemAction() {
   return (Store<AppState> store) async {
     ApiClient().fetchItem().then(
-          (item) => store.dispatch(
-            AddCartItemAction(
-              item: CartItem(name: item.name, checked: item.checked),
+          (items) => store.dispatch(
+            AddCartItemsAction(
+              items: items,
             ),
           ),
         );
